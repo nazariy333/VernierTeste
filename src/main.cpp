@@ -1,5 +1,9 @@
 #include <Arduino.h>
 #include <math.h>
+#include "freertos/FreeRTOS.h"
+#include "vernierSens/vernier.hpp"
+
+
 
 float calcCondut(float raw) {
   float slope = 65.70;
