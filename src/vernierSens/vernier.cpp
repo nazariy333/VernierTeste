@@ -70,11 +70,52 @@ void taskVernier (void * pvpar )
     float voltage;
     float _data;
     float sum = 0.0;
+//----------------------------------------------------------    
     for (int i = 0; i < numAv; i++){ //Media de 10 leituras
-        rawCount = analogRead(33);
+        rawCount = analogRead(36);
         sum = sum + rawCount;
     }
     voltage = sum / numAv / 4095.0 * 5.0; //!! Leituras sao interpretadas so para 5v 
+    sum = 0.0;
+    _data = calcTemp(voltage);
+
+    Serial.print("temperatura--->");
+    Serial.println(_data);
+//-----------------------------------------------------------
+  for (int i = 0; i < numAv; i++){ //Media de 10 leituras
+        rawCount = analogRead(39);
+        sum = sum + rawCount;
+    }
+    voltage = sum / numAv / 4095.0 * 5.0; //!! Leituras sao interpretadas so para 5v 
+    sum = 0.0;
+    _data = calcSM(voltage);
+
+    Serial.print("humidade de solo--->");
+    Serial.println(_data);
+//------------------------------------------------------------
+  for (int i = 0; i < numAv; i++){ //Media de 10 leituras
+        rawCount = analogRead(34);
+        sum = sum + rawCount;
+    }
+    voltage = sum / numAv / 4095.0 * 5.0; //!! Leituras sao interpretadas so para 5v 
+    sum = 0.0;
+    _data = calcPAR(voltage);
+
+    Serial.print("PAR--->");
+    Serial.println(_data);
+//------------------------------------------------------------
+  for (int i = 0; i < numAv; i++){ //Media de 10 leituras
+        rawCount = analogRead(35);
+        sum = sum + rawCount;
+    }
+    voltage = sum / numAv / 4095.0 * 5.0; //!! Leituras sao interpretadas so para 5v 
+    sum = 0.0;
+    _data = calcLumen(voltage);
+
+    Serial.print("luminocidade--->");
+    Serial.println(_data);
+//------------------------------------------------------------
+
 
     //_data = calcCondut(voltage);
     //_data = calcLumen(voltage);
@@ -83,10 +124,6 @@ void taskVernier (void * pvpar )
     //_data = calcPAR(voltage);
     //_data = calcPH(voltage);
     //_data = calcSM(voltage);
-    _data = calcTemp(voltage);
-
-    Serial.print("leitura--->");
-    Serial.println(_data);
 
     vTaskDelay(1000/portTICK_PERIOD_MS);
     }
