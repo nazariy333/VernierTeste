@@ -63,6 +63,7 @@ float calcTemp(float raw){ //NTC
 
 void taskVernier (void * pvpar )
 {
+  MCP3008 adc;
     while (1)
     {
     int numAv = 10; //Average
@@ -72,10 +73,10 @@ void taskVernier (void * pvpar )
     float sum = 0.0;
 //----------------------------------------------------------    
     for (int i = 0; i < numAv; i++){ //Media de 10 leituras
-        rawCount = analogRead(36);
+        rawCount = adc.analogRead(0);
         sum = sum + rawCount;
     }
-    voltage = sum / numAv / 4095.0 * 5.0; //!! Leituras sao interpretadas so para 5v 
+    voltage = sum / numAv / 1023.0 * 5.0; 
     sum = 0.0;
     _data = calcTemp(voltage);
 
@@ -83,10 +84,10 @@ void taskVernier (void * pvpar )
     Serial.println(_data);
 //-----------------------------------------------------------
   for (int i = 0; i < numAv; i++){ //Media de 10 leituras
-        rawCount = analogRead(39);
+        rawCount = adc.analogRead(1);
         sum = sum + rawCount;
     }
-    voltage = sum / numAv / 4095.0 * 5.0; //!! Leituras sao interpretadas so para 5v 
+    voltage = sum / numAv / 1023.0 * 5.0; 
     sum = 0.0;
     _data = calcSM(voltage);
 
@@ -94,10 +95,10 @@ void taskVernier (void * pvpar )
     Serial.println(_data);
 //------------------------------------------------------------
   for (int i = 0; i < numAv; i++){ //Media de 10 leituras
-        rawCount = analogRead(34);
+        rawCount = adc.analogRead(2);
         sum = sum + rawCount;
     }
-    voltage = sum / numAv / 4095.0 * 5.0; //!! Leituras sao interpretadas so para 5v 
+    voltage = sum / numAv / 1023.0 * 5.0;  
     sum = 0.0;
     _data = calcPAR(voltage);
 
@@ -105,10 +106,10 @@ void taskVernier (void * pvpar )
     Serial.println(_data);
 //------------------------------------------------------------
   for (int i = 0; i < numAv; i++){ //Media de 10 leituras
-        rawCount = analogRead(35);
+        rawCount = adc.analogRead(3);
         sum = sum + rawCount;
     }
-    voltage = sum / numAv / 4095.0 * 5.0; //!! Leituras sao interpretadas so para 5v 
+    voltage = sum / numAv / 1023.0 * 5.0; 
     sum = 0.0;
     _data = calcLumen(voltage);
 

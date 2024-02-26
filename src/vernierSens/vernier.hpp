@@ -2,6 +2,8 @@
 
 #include <Arduino.h>
 #include <math.h>
+#include <MCP3XXX.h>
+
 
 float calcCondut(float raw);
 float calcLumen(float raw);
