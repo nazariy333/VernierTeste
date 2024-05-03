@@ -100,15 +100,12 @@ namespace MQTT
 
             process_data();
             client.publish("sensors/input", packet);
-            #if ENV_MQTT_DEBUG
-                Serial.printf("MQTT: Packet sent: %s",packet);
-            #endif
+            
+                //Serial.printf("MQTT: Packet sent: %s",packet);
+           
             vTaskDelay(100/portTICK_PERIOD_MS);
 
-            client.publish("sensors/EM", EMPacket);
-            #if ENV_MQTT_DEBUG
-                Serial.printf("MQTT: Packet sent: %s",EMPacket);
-            #endif
+        
             vTaskDelay(ENV_SEND_PERIOD_SEC * 1000 / portTICK_PERIOD_MS);
         }
     }
