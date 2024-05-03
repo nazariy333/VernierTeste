@@ -3,8 +3,10 @@
 #include <Arduino.h>
 #include <math.h>
 #include <MCP3XXX.h>
+#include "../queues/queues.hpp"
 
-
+namespace Vernier
+{
 float calcCondut(float raw);
 float calcLumen(float raw);
 float calcNH4orNO3(float raw);
@@ -16,3 +18,4 @@ float calcTemp(float raw);
 
 
 void taskVernier (void * pvpar );
+}

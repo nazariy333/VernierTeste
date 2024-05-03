@@ -1,10 +1,13 @@
 #include "vernier.hpp"
 
+namespace Vernier
+{
+
 float calcCondut(float raw) { //Sensor de Condutividade
   float slope = 65.70;
   float intercept = 0.00;
- float aux = intercept + raw * slope;
- return aux;
+  float aux = intercept + raw * slope;
+return aux;
 }
 
 float calcLumen(float raw) { //Sensor de luminosidade
@@ -60,39 +63,39 @@ float calcTemp(float raw){ //NTC
     return aux;
 }
 
-
 void taskVernier (void * pvpar )
 {
+  queues::VernierReads_t readings;
+
   MCP3008 adc;
     while (1)
     {
     int numAv = 10; //Average
     float rawCount;
     float voltage;
-    float _data;
     float sum = 0.0;
 //----------------------------------------------------------    
     for (int i = 0; i < numAv; i++){ //Media de 10 leituras
         rawCount = adc.analogRead(0);
         sum = sum + rawCount;
     }
-    voltage = sum / numAv / 1023.0 * 5.0; 
-    sum = 0.0;
-    _data = calcTemp(voltage);
+  voltage = sum / numAv / 1023.0 * 5.0; 
+  sum = 0.0;
+  readings.dataTemp = calcTemp(voltage);
 
-    Serial.print("temperatura--->");
-    Serial.println(_data);
+  Serial.print("temperatura--->"); //DEBUG PRINT
+  Serial.println(readings.dataTemp);
 //-----------------------------------------------------------
   for (int i = 0; i < numAv; i++){ //Media de 10 leituras
-        rawCount = adc.analogRead(1);
-        sum = sum + rawCount;
+      rawCount = adc.analogRead(1);
+      sum = sum + rawCount;
     }
-    voltage = sum / numAv / 1023.0 * 5.0; 
-    sum = 0.0;
-    _data = calcSM(voltage);
+  voltage = sum / numAv / 1023.0 * 5.0; 
+  sum = 0.0;
+  readings.dataSM = calcSM(voltage);
 
-    Serial.print("humidade de solo--->");
-    Serial.println(_data);
+  Serial.print("humidade de solo--->");
+  Serial.println(readings.dataSM);
 //------------------------------------------------------------
   for (int i = 0; i < numAv; i++){ //Media de 10 leituras
         rawCount = adc.analogRead(2);
@@ -100,10 +103,10 @@ void taskVernier (void * pvpar )
     }
     voltage = sum / numAv / 1023.0 * 5.0;  
     sum = 0.0;
-    _data = calcPAR(voltage);
+    readings.dataPAR = calcPAR(voltage);
 
     Serial.print("PAR--->");
-    Serial.println(_data);
+    Serial.println(readings.dataPAR);
 //------------------------------------------------------------
   for (int i = 0; i < numAv; i++){ //Media de 10 leituras
         rawCount = adc.analogRead(3);
@@ -111,22 +114,73 @@ void taskVernier (void * pvpar )
     }
     voltage = sum / numAv / 1023.0 * 5.0; 
     sum = 0.0;
-    _data = calcLumen(voltage);
+    readings.dataLumen = calcLumen(voltage);
 
     Serial.print("luminocidade--->");
-    Serial.println(_data);
+    Serial.println(readings.dataLumen);
+//------------------------------------------------------------
+  for (int i = 0; i < numAv; i++){ //Media de 10 leituras
+        rawCount = adc.analogRead(4);
+        sum = sum + rawCount;
+    }
+    voltage = sum / numAv / 1023.0 * 5.0; 
+    sum = 0.0;
+    readings.dataORP = calcORP(voltage);
+
+    Serial.print("ORP--->");
+    Serial.println(readings.dataORP);
 //------------------------------------------------------------
 
+  for (int i = 0; i < numAv; i++){ //Media de 10 leituras
+        rawCount = adc.analogRead(5);
+        sum = sum + rawCount;
+    }
+    voltage = sum / numAv / 1023.0 * 5.0; 
+    sum = 0.0;
+    readings.dataNH4 = calcNH4orNO3(voltage);
 
-    //_data = calcCondut(voltage);
-    //_data = calcLumen(voltage);
-    //_data = calcNH4orNO3(voltage);
-    //_data = calcORP(voltage);
-    //_data = calcPAR(voltage);
-    //_data = calcPH(voltage);
-    //_data = calcSM(voltage);
+    Serial.print("NH4--->");
+    Serial.println(readings.dataNH4);
+//------------------------------------------------------------
 
+  for (int i = 0; i < numAv; i++){ //Media de 10 leituras
+        rawCount = adc.analogRead(6);
+        sum = sum + rawCount;
+    }
+    voltage = sum / numAv / 1023.0 * 5.0; 
+    sum = 0.0;
+    readings.dataNO3 = calcNH4orNO3(voltage);
+
+    Serial.print("NO3--->");
+    Serial.println(readings.dataNO3);
+//------------------------------------------------------------
+
+  for (int i = 0; i < numAv; i++){ //Media de 10 leituras
+        rawCount = adc.analogRead(7);
+        sum = sum + rawCount;
+    }
+    voltage = sum / numAv / 1023.0 * 5.0; 
+    sum = 0.0;
+    readings.dataConduct = calcCondut(voltage);
+
+    Serial.print("Condutividade--->");
+    Serial.println(readings.dataConduct);
+//------------------------------------------------------------
+
+  for (int i = 0; i < numAv; i++){ //Media de 10 leituras
+        rawCount = analogRead(33);
+        sum = sum + rawCount;
+    }
+    voltage = sum / numAv / 1023.0 * 5.0; 
+    sum = 0.0;
+    readings.dataPH = calcPH(voltage);
+
+    Serial.print("Condutividade--->");
+    Serial.println(readings.dataPH);
+//------------------------------------------------------------
+
+    xQueueOverwrite(queues::dataVernier, &readings);
     vTaskDelay(1000/portTICK_PERIOD_MS);
     }
 
-}
+}}
