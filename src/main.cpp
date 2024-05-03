@@ -4,15 +4,27 @@
 
 #include "freertos/FreeRTOS.h"
 #include "vernierSens/vernier.hpp"
+#include "queues/queues.hpp"
+#include "Network/Network.hpp"
+#include "MQTT/MQTT.hpp"
 
 MCP3008 adc;
+
+TaskHandle_t TaskNetwork;
+TaskHandle_t TaskVernier;
+TaskHandle_t TaskMQTT;
 
 void setup() {
   Serial.begin(115200);
   adc.begin();
 
-  //pinMode(33, INPUT);
-  xTaskCreate( taskVernier, "taskVernier", 4*1024, NULL, 1, NULL);
+  queues::setup();
+
+
+  pinMode(33, INPUT);
+  xTaskCreate( Network::taskNetwork, "taskNetwork", 5*1024, NULL, 1, &TaskNetwork);
+  xTaskCreate( Vernier::taskVernier, "taskVernier", 5*1024, NULL, 1, &TaskVernier);
+  xTaskCreate(MQTT::taskMQTT, "TaskMQTT", 5 * 1024, NULL, 1, &TaskMQTT);
 }
 
 void loop() {
