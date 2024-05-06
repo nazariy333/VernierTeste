@@ -105,8 +105,8 @@ void taskVernier (void * pvpar )
     sum = 0.0;
     readings.dataPAR = calcPAR(voltage);
 
-    Serial.print("PAR--->");
-    Serial.println(readings.dataPAR);
+    //Serial.print("PAR--->");
+    //Serial.println(readings.dataPAR);
 //------------------------------------------------------------
   for (int i = 0; i < numAv; i++){ //Media de 10 leituras
         rawCount = adc.analogRead(3);
@@ -116,8 +116,8 @@ void taskVernier (void * pvpar )
     sum = 0.0;
     readings.dataLumen = calcLumen(voltage);
 
-    Serial.print("luminocidade--->");
-    Serial.println(readings.dataLumen);
+    //Serial.print("luminocidade--->");
+    //Serial.println(readings.dataLumen);
 //------------------------------------------------------------
   for (int i = 0; i < numAv; i++){ //Media de 10 leituras
         rawCount = adc.analogRead(4);
@@ -127,8 +127,8 @@ void taskVernier (void * pvpar )
     sum = 0.0;
     readings.dataORP = calcORP(voltage);
 
-    Serial.print("ORP--->");
-    Serial.println(readings.dataORP);
+    //Serial.print("ORP--->");
+    //Serial.println(readings.dataORP);
 //------------------------------------------------------------
 
   for (int i = 0; i < numAv; i++){ //Media de 10 leituras
@@ -139,8 +139,8 @@ void taskVernier (void * pvpar )
     sum = 0.0;
     readings.dataNH4 = calcNH4orNO3(voltage);
 
-    Serial.print("NH4--->");
-    Serial.println(readings.dataNH4);
+    //Serial.print("NH4--->");
+    //Serial.println(readings.dataNH4);
 //------------------------------------------------------------
 
   for (int i = 0; i < numAv; i++){ //Media de 10 leituras
@@ -151,8 +151,8 @@ void taskVernier (void * pvpar )
     sum = 0.0;
     readings.dataNO3 = calcNH4orNO3(voltage);
 
-    Serial.print("NO3--->");
-    Serial.println(readings.dataNO3);
+    //Serial.print("NO3--->");
+    //Serial.println(readings.dataNO3);
 //------------------------------------------------------------
 
   for (int i = 0; i < numAv; i++){ //Media de 10 leituras
@@ -163,8 +163,8 @@ void taskVernier (void * pvpar )
     sum = 0.0;
     readings.dataConduct = calcCondut(voltage);
 
-    Serial.print("Condutividade--->");
-    Serial.println(readings.dataConduct);
+    //Serial.print("Condutividade--->");
+    //Serial.println(readings.dataConduct);
 //------------------------------------------------------------
 
   for (int i = 0; i < numAv; i++){ //Media de 10 leituras
@@ -175,8 +175,8 @@ void taskVernier (void * pvpar )
     sum = 0.0;
     readings.dataPH = calcPH(voltage);
 
-    Serial.print("Condutividade--->");
-    Serial.println(readings.dataPH);
+    //Serial.print("Condutividade--->");
+    //Serial.println(readings.dataPH);
 //------------------------------------------------------------
 
     xQueueOverwrite(queues::dataVernier, &readings);

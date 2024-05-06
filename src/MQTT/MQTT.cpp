@@ -2,7 +2,7 @@
 
 namespace MQTT
 {
-    #define ENV_MQTT_BROKER "raspberrypi.local" // endereço a ligar
+    #define ENV_MQTT_BROKER "192.168.1.132" // endereço a ligar
     #define ENV_SEND_PERIOD_SEC 65
 
     WiFiClient espClient;
@@ -62,8 +62,8 @@ namespace MQTT
             xQueuePeek(queues::dataVernier, &rcv_vernier_reads, 100 / portTICK_PERIOD_MS);
         }
         //Submerged sensors
-        snprintf(packet,512, "{\"ref\":\"sensIN\", \"Temperatura\":\"%.2f\", \"Soil Moiture\":\"%.2f\", \"PAR\":\"%.2f\", \"ORP\":\"%.2f\", \"NO3\":\"%.2f\", \"NH4\":\"%.2f\", \"Luminosidade\":\"%.2f\", \"PH\":\"%.2f\" }"
-        ,rcv_vernier_reads.dataTemp, rcv_vernier_reads.dataSM, rcv_vernier_reads.dataPAR, rcv_vernier_reads.dataORP, rcv_vernier_reads.dataNO3, rcv_vernier_reads.dataNH4, rcv_vernier_reads.dataLumen, rcv_vernier_reads.dataPH);
+        snprintf(packet,512, "{\"ref\":\"sensInVernier\", \"temp\":\"%.2f\", \"sm\":\"%.2f\", \"PAR\":\"%.2f\", \"ORP\":\"%.2f\", \"NO3\":\"%.2f\", \"NH4\":\"%.2f\", \"lum\":\"%.2f\", \"PH\":\"%.2f\", \"condut\":\"%.2f\" }"
+        ,rcv_vernier_reads.dataTemp, rcv_vernier_reads.dataSM, rcv_vernier_reads.dataPAR, rcv_vernier_reads.dataORP, rcv_vernier_reads.dataNO3, rcv_vernier_reads.dataNH4, rcv_vernier_reads.dataLumen, rcv_vernier_reads.dataPH, rcv_vernier_reads.dataConduct);
         //EM
        /* snprintf(EMPacket,512, "{\"ref\":\"EM\", \"AWD\":\"%.2f\", \"AWS\":\"%.2f\", \"AT\":\"%.2f\", \"AH\":\"%.2f\", \"AP\":\"%.2f\", \"RF\":\"%.2f\", \"UV\":\"%.2f\", \"Rad\":\"%.2f\" }"
         ,rcv_modbus_readings.EM_readings[1],rcv_modbus_readings.EM_readings[4],rcv_modbus_readings.EM_readings[6],rcv_modbus_readings.EM_readings[7],rcv_modbus_readings.EM_readings[8],rcv_modbus_readings.EM_readings[9],rcv_modbus_readings.EM_readings[11],rcv_modbus_readings.EM_readings[10]);*/
