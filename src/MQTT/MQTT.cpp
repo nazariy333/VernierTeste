@@ -10,7 +10,6 @@ namespace MQTT
 
     queues::VernierReads_t rcv_vernier_reads;
     char packet[512];
-    char EMPacket[512];
 
     void callback(char *topic, byte *payload, unsigned int length)
     {
@@ -37,13 +36,6 @@ namespace MQTT
             {
                 process_data();
                 client.publish("sensors/input", packet);
-                #if ENV_MQTT_DEBUG
-                    Serial.printf("MQTT: Packet sent: %s",packet);
-                #endif
-                client.publish("sensors/EM", EMPacket);
-                #if ENV_MQTT_DEBUG
-                    Serial.printf("MQTT: Packet sent: %s",EMPacket);
-                #endif
             }
             else
             {
@@ -64,9 +56,6 @@ namespace MQTT
         //Submerged sensors
         snprintf(packet,512, "{\"ref\":\"sensInVernier\", \"temp\":\"%.2f\", \"sm\":\"%.2f\", \"PAR\":\"%.2f\", \"ORP\":\"%.2f\", \"NO3\":\"%.2f\", \"NH4\":\"%.2f\", \"lum\":\"%.2f\", \"PH\":\"%.2f\", \"condut\":\"%.2f\" }"
         ,rcv_vernier_reads.dataTemp, rcv_vernier_reads.dataSM, rcv_vernier_reads.dataPAR, rcv_vernier_reads.dataORP, rcv_vernier_reads.dataNO3, rcv_vernier_reads.dataNH4, rcv_vernier_reads.dataLumen, rcv_vernier_reads.dataPH, rcv_vernier_reads.dataConduct);
-        //EM
-       /* snprintf(EMPacket,512, "{\"ref\":\"EM\", \"AWD\":\"%.2f\", \"AWS\":\"%.2f\", \"AT\":\"%.2f\", \"AH\":\"%.2f\", \"AP\":\"%.2f\", \"RF\":\"%.2f\", \"UV\":\"%.2f\", \"Rad\":\"%.2f\" }"
-        ,rcv_modbus_readings.EM_readings[1],rcv_modbus_readings.EM_readings[4],rcv_modbus_readings.EM_readings[6],rcv_modbus_readings.EM_readings[7],rcv_modbus_readings.EM_readings[8],rcv_modbus_readings.EM_readings[9],rcv_modbus_readings.EM_readings[11],rcv_modbus_readings.EM_readings[10]);*/
     }
     
     void initialize_values()
